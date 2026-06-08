@@ -152,6 +152,18 @@ body {
   letter-spacing: 0.06em;
   line-height: 1;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.time-separator {
+  width: 0.65em;
+  text-align: center;
+  transition: opacity 0.15s ease;
+}
+
+.time-separator.is-hidden {
+  opacity: 0;
 }
 
 .ampm {

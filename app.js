@@ -74,6 +74,7 @@ function getClockParts(timezone) {
 
     const hour = parts.find((p) => p.type === "hour")?.value ?? "12";
     const minute = parts.find((p) => p.type === "minute")?.value ?? "00";
+    const second = now.getSeconds();
     const dayPeriod = parts.find((p) => p.type === "dayPeriod")?.value ?? "";
     const dateLabel = new Intl.DateTimeFormat("ko-KR", {
       timeZone: timezone,
@@ -83,7 +84,7 @@ function getClockParts(timezone) {
       weekday: "short",
     }).format(now);
 
-    clockPartsCache.set(key, { hour, minute, dayPeriod, dateLabel });
+    clockPartsCache.set(key, { hour, minute, second, dayPeriod, dateLabel });
   }
   return clockPartsCache.get(key);
 }
@@ -124,7 +125,11 @@ function renderClocks() {
               </div>
               <p class="date-display" data-date="${index}">0000. 0. 0.</p>
               <div class="time-row">
-                <span class="time-display" data-time="${index}">00:00</span>
+                <span class="time-display">
+                  <span data-hour="${index}">00</span>
+                  <span class="time-separator" data-separator="${index}">:</span>
+                  <span data-minute="${index}">00</span>
+                </span>
                 <span class="ampm" data-ampm="${index}">AM</span>
               </div>
               <p class="timezone-hint" data-zone="${index}">${formatTimezoneLabel(country.timezone)}</p>
@@ -151,14 +156,18 @@ function updateTimes() {
 
   clockCountryIds.forEach((countryId, index) => {
     const country = findCountry(countryId);
-    const { hour, minute, dayPeriod, dateLabel } = getClockParts(country.timezone);
+    const { hour, minute, second, dayPeriod, dateLabel } = getClockParts(country.timezone);
 
-    const timeEl = document.querySelector(`[data-time="${index}"]`);
+    const hourEl = document.querySelector(`[data-hour="${index}"]`);
+    const minuteEl = document.querySelector(`[data-minute="${index}"]`);
+    const separatorEl = document.querySelector(`[data-separator="${index}"]`);
     const ampmEl = document.querySelector(`[data-ampm="${index}"]`);
     const dateEl = document.querySelector(`[data-date="${index}"]`);
     const zoneEl = document.querySelector(`[data-zone="${index}"]`);
 
-    if (timeEl) timeEl.textContent = `${hour}:${minute}`;
+    if (hourEl) hourEl.textContent = hour;
+    if (minuteEl) minuteEl.textContent = minute;
+    if (separatorEl) separatorEl.classList.toggle("is-hidden", second % 2 === 1);
     if (ampmEl) ampmEl.textContent = dayPeriod.toUpperCase();
     if (dateEl) dateEl.textContent = dateLabel;
     if (zoneEl) zoneEl.textContent = formatTimezoneLabel(country.timezone);

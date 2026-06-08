@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Clocks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="wall-shadow" aria-hidden="true"></div>
+    <section class="clocks" id="clocks"></section>
+  </main>
+
+  <dialog class="country-dialog" id="countryDialog">
+    <form method="dialog" class="dialog-form">
+      <header class="dialog-header">
+        <h2 id="dialogTitle">나라 선택</h2>
+        <button type="button" class="dialog-close" id="dialogClose" aria-label="닫기">×</button>
+      </header>
+      <div class="dialog-search">
+        <input type="search" id="countrySearch" placeholder="나라 검색..." autocomplete="off" />
+      </div>
+      <ul class="country-list" id="countryList"></ul>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
